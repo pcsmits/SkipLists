@@ -7,7 +7,7 @@ public class Builder
         SkipList list = new SkipList();
         for (int i = 0; i < 50; i++){
             double rand = (double) (int) Math.random() * 10000;
-            list.insertNode(rand);
+            list.insert(rand);
         }
 
 	}

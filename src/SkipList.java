@@ -13,19 +13,20 @@ public class SkipList {
         horizontalLink(head, tail);
 	}
 
-	public void insertNode(double num){
-        insert(head, num);
+	public void insert(double num){
+        insertNode(head, num);
 	}
+
 	public void removeNode(){
 
 	}
+
 	public SkipNode searchNode(){
         SkipNode node = null;
 
         return node;
 	}
 
-    public int getLevels () {return this.levels;}
 
     public void horizontalLink(SkipNode left, SkipNode right){
         left.setRight(right);
@@ -36,14 +37,14 @@ public class SkipList {
         child.setParent(parent);
     }
 
-    private void insert(SkipNode node, double val){
+    private void insertNode(SkipNode node, double val){
 
         if(val > node.getRight().getValue()){
             //move left
-            insert(node.getRight(), val);
+            insertNode(node.getRight(), val);
         } else if (node.hasChild()){
             //move down
-            insert(node.getChild(), val);
+            insertNode(node.getChild(), val);
         }
 
         /** no where to go insert
@@ -101,6 +102,8 @@ public class SkipList {
         return true;
     }
 
+    public int getLevels () {return this.levels;}
+    
     public String toString(){
         //pring string
         return "nonsense";
