@@ -5,20 +5,25 @@ public class SkipNode {
     private SkipNode child;
     private Boolean hasChild;
     private Boolean hasParent;
+    private Boolean hasRight;
     private double value;
+    private int level;
 
-    public SkipNode(double val) {
+    public SkipNode(double val, int level) {
         left = null;
         right = null;
         child = null;
         parent = null;
         hasChild = false;
         hasParent = false;
+        hasRight = false;
         value = val;
+        this.level = level;
     }
 
     public void setRight(SkipNode right) {
         this.right = right;
+        this.hasRight = true;
     }
     public void setLeft(SkipNode left){
         this.left = left;
@@ -34,6 +39,9 @@ public class SkipNode {
     public SkipNode getRight(){
         return right;
     }
+    public SkipNode getLeft(){
+        return left;
+    }
     public SkipNode getChild() {
         return child;
     }
@@ -41,13 +49,15 @@ public class SkipNode {
         return parent;
     }
     public double getValue(){
-
         return value;
     }
     public boolean hasChild(){
         return this.hasChild;
     }
-    public Boolean hasParent(){
+    public boolean hasParent(){
         return this.hasParent;
+    }
+    public boolean hasRight(){
+        return this.hasRight;
     }
 }

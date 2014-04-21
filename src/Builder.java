@@ -1,19 +1,19 @@
 import java.util.Random;
-import java.lang.Math;
 
 public class Builder
 {
 	public static void main(String[] args) {
         SkipList list = new SkipList();
-        for (int i = 0; i < 50; i++){
-            double rand = (double) (int) Math.random() * 10000;
+        Random rnd = new Random();
+
+        for (int i = 0; i < 256; i++){
+            Double val = rnd.nextDouble();
+            double rand = (double) (int) (val * 10000);
+            //System.out.println(rand);
             list.insert(rand);
         }
+        list.printList();
+        System.out.println(list.getLevels() + " levels");
 
-	}
-
-	private String runStatistics() {
-
-        return "Fail";
 	}
 }

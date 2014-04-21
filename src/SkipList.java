@@ -2,14 +2,14 @@ import  java.util.Random;
 
 public class SkipList {
 
-    private int levels = 0;
+    private int levels;
     private SkipNode head;
     private SkipNode tail;
 
 	public SkipList () {
         levels = 1;
-        head = new SkipNode(Double.NEGATIVE_INFINITY);
-        tail = new SkipNode(Double.POSITIVE_INFINITY);
+        head = new SkipNode(Double.NEGATIVE_INFINITY, levels);
+        tail = new SkipNode(Double.POSITIVE_INFINITY, levels);
         horizontalLink(head, tail);
 	}
 
@@ -29,12 +29,12 @@ public class SkipList {
 
 
     public void horizontalLink(SkipNode left, SkipNode right){
-        left.setRight(right);
         right.setLeft(left);
+        left.setRight(right);
     }
     public void verticalLink(SkipNode parent, SkipNode child){
-        parent.setChild(child);
         child.setParent(parent);
+        parent.setChild(child);
     }
 
     private void insertNode(SkipNode node, double val){
@@ -52,33 +52,27 @@ public class SkipList {
          *  then flip coin and create vertical links
          */
         else {
-            SkipNode newNode = new SkipNode(val);
+            SkipNode newNode = new SkipNode(val, 1);
             SkipNode right = node.getRight();
 
             horizontalLink(node, newNode);
             horizontalLink(newNode, right);
 
-            grow(node, val);
+            grow(node, val, 1);
         }
     }
-    private void grow(SkipNode left, double val){
+    private void grow(SkipNode left, double val, int height){
         if(flip()){
-            SkipNode newNode = new SkipNode(val);
-
-            if(left.hasParent()){
-                horizontalLink(left.getParent(), newNode);
-                horizontalLink(newNode, left.getParent().getRight());
-                verticalLink(newNode, left.getRight());
-
-                //recurse
-                grow(newNode, val);
-            } else {
+            height++;
+            SkipNode newNode = new SkipNode(val, height);
+            if(height > levels){
                 //create a new level change head and tail
-                levels = levels++;
+                //System.out.println("\tNew level created " + height + " - " + levels);
+                levels = levels + 1;
 
                 // for the new level you need 3 new nodes head tail and new val
-                SkipNode newHead = new SkipNode(Double.NEGATIVE_INFINITY);
-                SkipNode newTail = new SkipNode(Double.POSITIVE_INFINITY);
+                SkipNode newHead = new SkipNode(Double.NEGATIVE_INFINITY, height);
+                SkipNode newTail = new SkipNode(Double.POSITIVE_INFINITY, height);
 
                 //start linking on tail end to avoid concurrency issues
                 verticalLink(newTail, tail);
@@ -89,6 +83,17 @@ public class SkipList {
 
                 head = newHead;
                 tail = newTail;
+            } else {
+                // insert at first node to the left with a parent
+                left = getFirstWithParent(left);
+                horizontalLink(newNode, left.getParent().getRight());
+                horizontalLink(left.getParent(), newNode);
+                verticalLink(newNode, left.getRight());
+
+                //recurse
+                grow(left.getParent(), val, height);
+
+
             }
         }
     }
@@ -99,13 +104,34 @@ public class SkipList {
         if(val < .5){
             return false;
         }
+        //System.out.println("\tgrowing");
         return true;
     }
 
+    private SkipNode getFirstWithParent(SkipNode node){
+        while(!node.hasParent()){
+            node = node.getLeft();
+        }
+        return node;
+    }
+
     public int getLevels () {return this.levels;}
-    
-    public String toString(){
+
+
+    public void printList(){
         //pring string
-        return "nonsense";
+        SkipNode node = head;
+        printRow(node);
+        while(node.hasChild()){
+            node = node.getChild();
+            printRow(node);
+        }
+    }
+    private void printRow(SkipNode node) {
+        while(node.hasRight()){
+            System.out.print(node.getValue() + " -- ");
+            node = node.getRight();
+        }
+        System.out.println(node.getValue());
     }
 }
