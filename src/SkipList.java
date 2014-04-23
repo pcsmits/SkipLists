@@ -5,6 +5,7 @@ public class SkipList {
     private int levels;
     private SkipNode head;
     private SkipNode tail;
+    public int traversal = 0;
 
 	public SkipList () {
         levels = 1;
@@ -21,10 +22,33 @@ public class SkipList {
 
 	}
 
-	public SkipNode searchNode(){
-        SkipNode node = null;
-
-        return node;
+	public double search(double search) throws ValueNotFoundException {
+        SkipNode node = head;
+        traversal = 0;
+        while(search != node.getValue()) {
+            System.out.print(node.getValue() + ", ");
+            if (search > node.getRight().getValue()) {
+                //move right
+                System.out.print("going right ");
+                node = node.getRight();
+            } else if (search < node.getRight().getValue()) {
+                //move down
+                if (!node.hasChild()) {
+                    // no child but not correct value
+                    throw new ValueNotFoundException("Value Not Found in Skip List");
+                }
+                System.out.print("going down on your mother");
+                node = node.getChild();
+            } else {
+                node = node.getRight();
+                while(node.hasChild()) {
+                    node = node.getChild();
+                    traversal++;
+                }
+            }
+            traversal++;
+        }
+        return node.getValue();
 	}
 
 
@@ -35,6 +59,19 @@ public class SkipList {
     public void verticalLink(SkipNode parent, SkipNode child){
         child.setParent(parent);
         parent.setChild(child);
+    }
+
+    public int getLevels () {return this.levels;}
+
+
+    public void printList(){
+        //pring string
+        SkipNode node = head;
+        printRow(node);
+        while(node.hasChild()){
+            node = node.getChild();
+            printRow(node);
+        }
     }
 
     private void insertNode(SkipNode node, double val){
@@ -115,18 +152,7 @@ public class SkipList {
         return node;
     }
 
-    public int getLevels () {return this.levels;}
 
-
-    public void printList(){
-        //pring string
-        SkipNode node = head;
-        printRow(node);
-        while(node.hasChild()){
-            node = node.getChild();
-            printRow(node);
-        }
-    }
     private void printRow(SkipNode node) {
         while(node.hasRight()){
             System.out.print(node.getValue() + " -- ");
