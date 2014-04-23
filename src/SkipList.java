@@ -122,13 +122,13 @@ public class SkipList {
                 tail = newTail;
             } else {
                 // insert at first node to the left with a parent
-                left = getFirstWithParent(left);
-                horizontalLink(newNode, left.getParent().getRight());
-                horizontalLink(left.getParent(), newNode);
+                SkipNode parentLeft = getFirstWithParent(left);
+                horizontalLink(newNode, parentLeft.getParent().getRight());
+                horizontalLink(parentLeft.getParent(), newNode);
                 verticalLink(newNode, left.getRight());
 
                 //recurse
-                grow(left.getParent(), val, height);
+                grow(parentLeft.getParent(), val, height);
 
 
             }

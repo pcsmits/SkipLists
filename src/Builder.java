@@ -7,9 +7,9 @@ public class Builder
         SkipList list = new SkipList();
         Random rnd = new Random();
 
-        for (int i = 0; i < 16; i++){
+        for (int i = 0; i < 128; i++){
             Double val = rnd.nextDouble();
-            double rand = (double) (int) (val * 100);
+            double rand = (double) (int) (val * 1000);
             //System.out.println(rand);
             list.insert(rand);
         }
