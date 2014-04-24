@@ -29,7 +29,6 @@ public class SkipList {
             System.out.print(node.getValue() + ", ");
             if (search > node.getRight().getValue()) {
                 //move right
-                System.out.print("going right ");
                 node = node.getRight();
             } else if (search < node.getRight().getValue()) {
                 //move down
@@ -37,7 +36,6 @@ public class SkipList {
                     // no child but not correct value
                     throw new ValueNotFoundException("Value Not Found in Skip List");
                 }
-                System.out.print("going down on your mother");
                 node = node.getChild();
             } else {
                 node = node.getRight();

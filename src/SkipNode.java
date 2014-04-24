@@ -36,6 +36,7 @@ public class SkipNode {
         this.child = child;
         this.hasChild = true;
     }
+
     public SkipNode getRight(){
         return right;
     }
