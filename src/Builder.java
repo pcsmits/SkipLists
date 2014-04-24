@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -5,8 +6,7 @@ public class Builder
 {
 	public static void main(String[] args) {
         SkipList list = new SkipList();
-        RedBlackNode root = new RedBlackNode(RedBlack.BLACK);
-        RedBlackTree tree;
+        RedBlackTree<Double> tree = new RedBlackTree<Double>();
         Random rnd = new Random();
 
         // Loop Through Arguements
@@ -36,29 +36,35 @@ public class Builder
            }
         }
 
-        double average = 0;
+        double averageList = 0;
+        double averageTree = 0;
         for (int run = 0; run < loop; run++) {
             list = new SkipList();
+            tree = new RedBlackTree<Double>();
             for (int i = 0; i < size; i++) {
                 Double val = rnd.nextDouble();
                 double number = 0;
                 if (dataSet == 0) {
-                    number = (double) (int) (val * 500);
+                    number = (double) (int) (val * 500000);
                 } else if (dataSet == 1) {
                     number = i;
                 }
-                //System.out.println(rand);
+
                 list.insert(number);
-                RedBlackNode node = new RedBlackNode(number, node);
                 tree.insert(number);
+
             }
             if(debug) {list.printList();}
 
-            average += list.getLevels();
-            System.out.println(list.getLevels() + " levels");
+            averageList += list.getLevels();
+            averageTree += tree.height();
+
+            System.out.println(list.getLevels() + " list height");
+            System.out.println(tree.height() + " tree height");
         }
         System.out.println("");
-        System.out.println(average/loop + ": Average level");
+        System.out.println(averageList/loop + ": Average List Height");
+        System.out.println(averageTree/loop + ": Average Tree Height");
 
 
         Scanner scan = new Scanner(System.in);
