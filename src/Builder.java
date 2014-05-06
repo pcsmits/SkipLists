@@ -1,8 +1,7 @@
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Builder
+public class Builder extends Thread
 {
 	public static void main(String[] args) {
         SkipList list = new SkipList();
@@ -14,7 +13,9 @@ public class Builder
         int dataSet = 0; //random = 0, linear = 1
         boolean debug = false;
         boolean duplicates = false;
-        boolean query = true;
+        boolean query = false;
+        boolean threads = false;
+
         int loop = 1;
         for (int i = 0; i < args.length; i++){
             try {
@@ -33,7 +34,18 @@ public class Builder
            } else if (args[i].equals("repeat")){
                query = false;
                loop = 100;
+           } else if (args[i].equals("search")){
+               query = true;
+           } else if (args[i].equals("threaded")){
+               threads = true;
            }
+        }
+
+        if(threads){
+            (new Builder()).start();
+            (new Builder()).start();
+            (new Builder()).start();
+            (new Builder()).start();
         }
 
         double averageList = 0;
@@ -45,7 +57,7 @@ public class Builder
                 Double val = rnd.nextDouble();
                 double number = 0;
                 if (dataSet == 0) {
-                    number = (double) (int) (val * 500000);
+                    number = (double) (int) (val * 1000);
                 } else if (dataSet == 1) {
                     number = i;
                 }
@@ -70,15 +82,18 @@ public class Builder
         Scanner scan = new Scanner(System.in);
         String input;
         if (query) {
-            System.out.println("Search Skip list: ");
+            System.out.println("Search Data Structures: ");
         }
 
         boolean failed = true;
-        double value = -1;
+        double listValue = -1;
+        double treeValue = -1;
+
         while (failed && query) {
             input = scan.nextLine();
             try {
-                value = list.search(Double.parseDouble(input));
+                listValue = list.search(Double.parseDouble(input));
+                tree.getComparison(Double.parseDouble(input));
                 failed = false;
             } catch (ValueNotFoundException E) {
                 System.out.println("");
@@ -89,8 +104,13 @@ public class Builder
 
         if (query) {
             System.out.println("");
-            System.out.println("Node's key " + value);
-            System.out.println(list.traversal);
+            System.out.println("List comparisons: " + list.traversal);
+            System.out.println("Tree comparison: "  + tree.comparison);
         }
 	}
+
+    public void run() {
+
+        System.exit(0);
+    }
 }

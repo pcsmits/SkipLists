@@ -1,6 +1,6 @@
 import  java.util.Random;
 
-public class SkipList {
+public class SkipList  {
 
     private int levels;
     private SkipNode head;
@@ -16,10 +16,6 @@ public class SkipList {
 
 	public void insert(double num){
         insertNode(head, num);
-	}
-
-	public void removeNode(){
-
 	}
 
 	public double search(double search) throws ValueNotFoundException {
@@ -51,8 +47,13 @@ public class SkipList {
 
 
     public void horizontalLink(SkipNode left, SkipNode right){
+        // when making new links lock left and left parent
+        left.setLock(true);
+
         right.setLeft(left);
         left.setRight(right);
+
+        left.setLock(false);
     }
     public void verticalLink(SkipNode parent, SkipNode child){
         child.setParent(parent);
@@ -73,7 +74,11 @@ public class SkipList {
     }
 
     private void insertNode(SkipNode node, double val){
-
+        // check for locks
+        if(node.getLock()){
+            //if locked repeat until not locked
+            insertNode(node, val);
+        }
         if(val > node.getRight().getValue()){
             //move left
             insertNode(node.getRight(), val);

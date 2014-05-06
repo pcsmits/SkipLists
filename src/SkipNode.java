@@ -6,6 +6,7 @@ public class SkipNode {
     private Boolean hasChild;
     private Boolean hasParent;
     private Boolean hasRight;
+    private Boolean locked;
     private double value;
     private int level;
 
@@ -19,6 +20,7 @@ public class SkipNode {
         hasRight = false;
         value = val;
         this.level = level;
+        locked = false;
     }
 
     public void setRight(SkipNode right) {
@@ -36,6 +38,9 @@ public class SkipNode {
         this.child = child;
         this.hasChild = true;
     }
+    public void setLock(Boolean lock){
+        locked = lock;
+    }
 
     public SkipNode getRight(){
         return right;
@@ -49,6 +54,7 @@ public class SkipNode {
     public SkipNode getParent() {
         return parent;
     }
+    public Boolean getLock() {return locked;}
     public double getValue(){
         return value;
     }

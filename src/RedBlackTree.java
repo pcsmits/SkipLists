@@ -10,6 +10,7 @@ public class RedBlackTree<T extends Comparable<? super T>> implements Iterable<R
 	private BinaryNode root;
 	private int modCount = 0;
 	private int rotationCount = 0;
+    public int comparison = 0;
 	
 	/**
 	 * Constructs a BinarySearchTree
@@ -166,9 +167,13 @@ public class RedBlackTree<T extends Comparable<? super T>> implements Iterable<R
 		if(item == null) {
 			throw new IllegalArgumentException();
 		}
+
 		return root.get(item);
 	}
-	
+
+    public void getComparison(T item){
+        comparison = root.getComparison(item);
+    }
 	public int getRotationCount() {
 		return rotationCount;
 	}
@@ -732,6 +737,16 @@ public class RedBlackTree<T extends Comparable<? super T>> implements Iterable<R
 				return element;
 			}
 		}
+
+        public int getComparison(T item) {
+            if(item.compareTo(element) > 0) {
+                return right.getComparison(item) + 1;
+            } else if(item.compareTo(element) < 0) {
+                return left.getComparison(item) + 1;
+            } else {
+                return 1;
+            }
+        }
 		
 		public Color getColor() {
 			return color;
